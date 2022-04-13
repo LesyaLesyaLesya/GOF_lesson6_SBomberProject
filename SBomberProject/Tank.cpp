@@ -1,5 +1,8 @@
 
 #include <iostream>
+#include <ctime>
+#include <string>
+#include <sstream>
 
 #include "Tank.h"
 #include "MyTools.h"
@@ -41,4 +44,15 @@ void Tank::Draw() const
 	cout << "    #####";
 	GotoXY(x,y);
 	cout << " ###########";
+
+	srand(time(0)); // автоматическая рандомизация
+	int randVal = rand() % 10;
+
+	//if (randVal > 6)
+	//{
+		stringstream ss;
+		ss << randVal;
+		mediator_->Notify("Tank mess " + ss.str());
+	//}
+	
 }

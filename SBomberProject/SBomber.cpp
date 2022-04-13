@@ -3,15 +3,20 @@
 #include <windows.h>
 #include <utility>
 #include <stdexcept>
+#include <ctime>
 
 #include "SBomber.h"
 #include "Bomb.h"
 #include "Ground.h"
 #include "Tank.h"
 #include "House.h"
+#include "Mediator.h"
 
 using namespace std;
 using namespace MyTools;
+
+Mediator med = Mediator();
+std::unique_ptr<Mediator> Tank::mediator_ = std::make_unique<Mediator>(med);
 
 SBomber::SBomber(std::shared_ptr<MyTools::ILogger> logger)
     : exitFlag(false),
@@ -29,13 +34,38 @@ SBomber::SBomber(std::shared_ptr<MyTools::ILogger> logger)
     }
     logger_->WriteToLog(string(__FUNCTION__) + " was invoked");
 
-    Plane* p = new Plane;
+
+    srand(time(0)); // автоматическая рандомизация
+    int randVal = 1 + rand() % 2; //генерируем случаное число от 1 до 2
+    Plane* p{ nullptr };
+    switch (randVal)
+    {
+    case 2:
+    {   
+        //std::static_pointer_cast<Plane>(std::make_shared<BigPlane>());
+        p = new BigPlane;
+        break;
+    }
+    case 1:
+    {
+        p = new ColorPlane;
+        break;
+    }
+    default:
+        break;
+    }
+    //Plane* p = new Plane;
     p->SetDirection(1, 0.1);
     p->SetSpeed(4);
     p->SetPos(5, 10);
     vecDynamicObj.push_back(p);
 
     LevelGUI* pGUI = new LevelGUI;
+    //std::shared_ptr<LevelGUI> pGUI = std::make_shared<LevelGUI>(LevelGUI());
+    //med.setGUI(std::make_shared<LevelGUI>(*pGUI));
+    
+   // Tank::mediator_->addParticipant(std::make_shared<LevelGUI>(*pGUI));
+    Tank::mediator_->addParticipant(pGUI);
     pGUI->SetParam(passedTime, fps, bombsNumber, score);
     const uint16_t maxX = GetMaxX();
     const uint16_t maxY = GetMaxY(); 
@@ -53,15 +83,24 @@ SBomber::SBomber(std::shared_ptr<MyTools::ILogger> logger)
     pGr->SetWidth(width - 2);
     vecStaticObj.push_back(pGr);
 
-    Tank* pTank = new Tank;
+    //std::shared_ptr<LevelGUI> tpGUI = std::make_shared<LevelGUI>(pGUI);
+    //Mediator med(tpGUI);
+    //std::unique_ptr<Mediator> med = std::make_unique<Mediator>(Mediator(std::make_shared<LevelGUI>(*pGUI)));
+    
+
+
+    Tank* pTank = new Tank();
     pTank->SetWidth(13);
     pTank->SetPos(30, groundY - 1);
     vecStaticObj.push_back(pTank);
 
-    pTank = new Tank;
+    pTank = new Tank();
     pTank->SetWidth(13);
     pTank->SetPos(50, groundY - 1);
     vecStaticObj.push_back(pTank);
+
+    //std::unique_ptr<Mediator> Tank::mediator_
+     //   = std::unique_ptr(Mediator(std::make_shared<LevelGUI>(*pGUI)));
 
     House * pHouse = new House;
     pHouse->SetWidth(13);
