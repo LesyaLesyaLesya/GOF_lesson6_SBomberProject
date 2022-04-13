@@ -20,6 +20,7 @@ public:
 	bool __fastcall isInside(double xn) const;
 	
 	void Draw() const override;
+	void BeNotified(std::string info) override {};
 
 private:
 
@@ -36,7 +37,7 @@ public:
 	void Draw() const override;
 
 	void __fastcall AddCrater(double xn);
-
+	void BeNotified(std::string info) override {};
 private:
 
 	bool __fastcall isInsideAnyCrater(double x) const;

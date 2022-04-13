@@ -1,11 +1,14 @@
 #pragma once
+#include <string>
 
 class GameObject {
 public:
 
     GameObject() : x(0.0), y(0.0), width(0) { }
+    virtual ~GameObject() = default;
 
     virtual void Draw() const = 0;
+    virtual void BeNotified(std::string info) = 0;
 
     inline void SetPos(double nx, double ny) { x = nx; y = ny; }
 
@@ -14,6 +17,8 @@ public:
 
     inline void SetWidth(uint16_t widthN) { width = widthN; }
     inline uint16_t GetWidth() const { return width; }
+
+    
 
 protected:
 

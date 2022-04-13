@@ -40,6 +40,13 @@ void LevelGUI::Draw() const
     cout << "BombsNum: " << bombsNumber;
     GotoXY(62, 1);
     cout << "Score: " << score;
+
+
+    if (!messages_.empty())
+    {
+        GotoXY(3, 22);
+        cout << "Tank message: " << messages_.front();
+    }
 }
 
 void __fastcall LevelGUI::SetParam(uint64_t passedTimeNew, uint64_t fpsNew, uint16_t bombsNumberNew, int16_t scoreNew)
@@ -49,3 +56,10 @@ void __fastcall LevelGUI::SetParam(uint64_t passedTimeNew, uint64_t fpsNew, uint
     bombsNumber = bombsNumberNew;
     score = scoreNew;
 }
+
+void LevelGUI::BeNotified(std::string mes)
+{
+    //добавляем сообщение в очередь
+    messages_.push(mes);
+}
+

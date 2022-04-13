@@ -13,7 +13,7 @@ public:
 	inline uint16_t GetScore() const override { return score; }
 
 	void Draw() const override;
-
+	void BeNotified(std::string info) override {};
 private:
 
 	const uint16_t score = 40;

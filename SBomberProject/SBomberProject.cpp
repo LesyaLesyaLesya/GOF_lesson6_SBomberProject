@@ -10,6 +10,7 @@ using namespace std;
 
 //========================================================================================================================
 
+
 int main(void)
 {
     auto logger = std::make_shared<MyTools::ProxyLogger>(MyTools::FileLoggerSingleton::getInstance());

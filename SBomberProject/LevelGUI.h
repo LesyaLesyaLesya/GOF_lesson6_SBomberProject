@@ -1,6 +1,8 @@
 #pragma once
 
 #include <stdint.h>
+#include <queue>
+//#include <string>
 
 #include "GameObject.h"
 
@@ -17,7 +19,7 @@ public:
     inline void SetFinishX(uint16_t finishXN) { finishX = finishXN; }
 
     void Draw() const override;
-
+    void BeNotified(std::string info) override;
 private:
 
     uint16_t height;
@@ -26,6 +28,7 @@ private:
     uint64_t passedTime, fps;
     uint16_t bombsNumber;
     int16_t score;
+    std::queue<std::string> messages_;
 };
 
 
